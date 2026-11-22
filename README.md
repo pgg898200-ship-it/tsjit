@@ -1,20 +1,28 @@
 # tsjit
 
-**Time-Series JIT Compiler & Sub-Microsecond Streaming Inference Runtime.**
+**Update a time-series forecast as each observation arrives.** Feed the Python runtime an ordered series of measurements. Each step returns nine quantiles, a calibrated interval and rolling statistics for your downstream alert or scheduler. The native CPU path runs locally. A separate compiler wraps supported PyTorch forecasting models for batched GPU inference.
 
-`tsjit` is an Apache-2.0 drop-in compiler and streaming runtime for time-series foundation models (TSFMs), high-rate online statistical inference, and multi-agent streaming pipelines. It installs with **zero mandatory runtime dependencies** (`< 16 ms` cold startup), builds a native C11 SIMD (`AVX2+FMA` / `NEON`) arrival and epoch-arena engine on first use, and unlocks plan-aware Hopper SM90 CUDA/Triton compilation, strict-FP32-parity precision guards, and `O(1)`-bandwidth multi-GPU fusion when PyTorch/CUDA is present.
+## Try five readings on your CPU
+
+Use Python 3.10+, Git and a C11 compiler on Linux or macOS. Install the tested source revision in your Python environment.
+
+```sh
+python -m pip install "git+https://github.com/pgg898200-ship-it/tsjit.git@a58e550e15431c77366424c9f12deb3acb076316"
+```
 
 ```python
 import tsjit
 
-# 1. One-line plan-aware TSFM compiler (Datadog/Toto-2.0, Chronos-Bolt, Chronos-2, or nn.Module)
-fast_model = tsjit.compile(model, horizon=16, context_length=512, precision="a10-auto", verify=True)
-q = fast_model.predict_quantiles(x)  # up to 35.5x faster vs eager, 35.8x vs torch.compile
+spec = tsjit.StreamSpec(name="meter", window=16, max_age=4)
+with tsjit.stream(spec=spec) as stream:
+    for tick, value in enumerate([10.0, 11.0, 12.0, 13.0, 14.0]):
+        result = stream.step(tick, value)
 
-# 2. Sub-microsecond causal streaming with OnlineACI + E-Value event gating (zero GPU blocking)
-with tsjit.stream(fast_model, spec={"name": "sensor_a", "window": 64, "max_age": 4}) as rt:
-    out = rt.step(step=0, value=42.1)  # 0.121 us/decision batched C11; bit-exact causal
+print(result.step, result.rolling_mean, len(result.q9))
+# 4 12.0 9
 ```
+
+Run `tsjit verify` to check the native build, causal outputs and isolation between channels on your machine. For a GPU-backed forecast, start with the [compiler example](#1-plan-aware-tsfm-compilation-tsjitcompile). For agent clients, use the [MCP server](#4-built-in-mcp-server-tsjit-mcp).
 
 ---
 
@@ -56,23 +64,13 @@ Production streaming and multi-agent time-series stacks stall at five coupled bo
 
 ---
 
-## Installation & 30-Second Quickstart
+## GPU and model integrations
 
-`tsjit` requires Python `>= 3.10` and a standard C11 compiler (`cc` / `gcc` / `clang`) for the native CPU runtime. Core installation pulls **zero** third-party packages:
+From a source checkout, choose the extras for your workload. The GPU compiler uses PyTorch, Triton and NumPy. The model integrations add forecasting libraries.
 
-```bash
-pip install tsjit                 # core zero-dep C11 runtime + CLI + MCP server
-pip install "tsjit[cuda]"         # adds PyTorch + Triton + NumPy for GPU compiler/kernels
-pip install "tsjit[tsfm]"         # optional public TSFM integrations (Chronos, Toto, TimesFM)
-```
-
-From a local checkout:
-
-```bash
-pip install -e .
-tsjit info
-tsjit verify
-tsjit bench --steps 20000 --agents 16
+```sh
+python -m pip install -e '.[cuda]'       # GPU compiler and kernels
+python -m pip install -e '.[cuda,tsfm]'  # GPU compiler plus model integrations
 ```
 
 ### 1. Plan-Aware TSFM Compilation (`tsjit.compile`)

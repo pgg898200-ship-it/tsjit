@@ -31,7 +31,7 @@ library_name: tsjit
 ## Quickstart
 
 ```bash
-pip install tsjit
+python -m pip install "git+https://github.com/pgg898200-ship-it/tsjit.git@a58e550e15431c77366424c9f12deb3acb076316"
 tsjit info
 tsjit verify
 tsjit bench
