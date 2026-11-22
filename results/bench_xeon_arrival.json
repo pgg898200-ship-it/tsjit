@@ -1,0 +1,81 @@
+{
+  "cli_startup": {
+    "cli_help_median_ms": 9.71,
+    "import_tsjit_median_ms": 8.55
+  },
+  "multi_agent_hub": [
+    {
+      "agent_ticks_per_sec": 33622.4,
+      "n_agents": 1,
+      "n_channels": 16,
+      "tick_us": 29.74,
+      "ticks": 500
+    },
+    {
+      "agent_ticks_per_sec": 20999.9,
+      "n_agents": 8,
+      "n_channels": 16,
+      "tick_us": 380.95,
+      "ticks": 500
+    },
+    {
+      "agent_ticks_per_sec": 20057.5,
+      "n_agents": 32,
+      "n_channels": 16,
+      "tick_us": 1595.41,
+      "ticks": 500
+    }
+  ],
+  "native": {
+    "available": true,
+    "cacheline_bytes": 64,
+    "compiler": "gcc",
+    "library_path": "libtsjit_native_10eb60e6adff8aa4.so",
+    "pwl_hot_row_bytes": 384,
+    "seqlock_slot_bytes": 384,
+    "simd_isa": "AVX2"
+  },
+  "pwl_arrive": {
+    "hot_hits": 55500,
+    "mean_us": 3.734,
+    "p50_us": 3.889,
+    "p95_us": 4.26,
+    "p99_us": 5.402,
+    "steps": 50000,
+    "throughput_arrivals_per_sec": 267780.8
+  },
+  "schur_shared_core": [
+    {
+      "fallback_count": 0,
+      "k_aug": 4,
+      "k_core": 32,
+      "max_rel_residual": 6.661338147750939e-16,
+      "mean_us": 33.89,
+      "n_forms": 10,
+      "used_linv": true
+    },
+    {
+      "fallback_count": 0,
+      "k_aug": 4,
+      "k_core": 64,
+      "max_rel_residual": 8.881784197001252e-16,
+      "mean_us": 128.24,
+      "n_forms": 10,
+      "used_linv": true
+    },
+    {
+      "fallback_count": 0,
+      "k_aug": 8,
+      "k_core": 128,
+      "max_rel_residual": 1.3322676295501878e-15,
+      "mean_us": 1210.03,
+      "n_forms": 10,
+      "used_linv": true
+    }
+  ],
+  "soft_revision_v2": {
+    "mean_us": 4.885,
+    "steps": 25000,
+    "throughput_arrivals_per_sec": 204701.1
+  }
+}

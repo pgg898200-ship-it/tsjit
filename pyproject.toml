@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsjit"
+version = "0.1.0"
+description = "Clean-room streaming time-series native runtime, conformal calibration, and compiler"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "TSJIT Contributors" }]
+requires-python = ">=3.10"
+dependencies = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: C",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/tsjit/tsjit"
+Repository = "https://github.com/tsjit/tsjit"
+Issues = "https://github.com/tsjit/tsjit/issues"
+
+[project.optional-dependencies]
+numpy = ["numpy>=1.26"]
+cuda = ["torch>=2.3", "triton>=3.0", "numpy>=1.26"]
+tsfm = ["chronos-forecasting", "toto-ts", "timesfm"]
+dev = ["pytest>=8.0", "ruff>=0.6", "build"]
+
+[project.scripts]
+tsjit = "tsjit.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+tsjit = [
+    "*.c",
+    "*.h",
+    "*.cu",
+    "*.cpp",
+    "native/*.c",
+    "native/*.h",
+    "cuda/*.cu",
+    "cuda/*.cpp",
+    "cuda/*.c",
+    "cuda/*.h",
+    "**/*.c",
+    "**/*.h",
+    "**/*.cu",
+    "**/*.cpp",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,81 @@
+{
+  "cli_startup": {
+    "cli_help_median_ms": 15.58,
+    "import_tsjit_median_ms": 15.07
+  },
+  "multi_agent_hub": [
+    {
+      "agent_ticks_per_sec": 54657.3,
+      "n_agents": 1,
+      "n_channels": 16,
+      "tick_us": 18.3,
+      "ticks": 500
+    },
+    {
+      "agent_ticks_per_sec": 34247.2,
+      "n_agents": 8,
+      "n_channels": 16,
+      "tick_us": 233.6,
+      "ticks": 500
+    },
+    {
+      "agent_ticks_per_sec": 33605.0,
+      "n_agents": 32,
+      "n_channels": 16,
+      "tick_us": 952.24,
+      "ticks": 500
+    }
+  ],
+  "native": {
+    "available": true,
+    "cacheline_bytes": 128,
+    "compiler": "clang",
+    "library_path": "libtsjit_native_5f768dee66cfd13d.dylib",
+    "pwl_hot_row_bytes": 384,
+    "seqlock_slot_bytes": 384,
+    "simd_isa": "NEON"
+  },
+  "pwl_arrive": {
+    "hot_hits": 55500,
+    "mean_us": 2.701,
+    "p50_us": 2.833,
+    "p95_us": 3.0,
+    "p99_us": 3.666,
+    "steps": 50000,
+    "throughput_arrivals_per_sec": 370199.9
+  },
+  "schur_shared_core": [
+    {
+      "fallback_count": 0,
+      "k_aug": 4,
+      "k_core": 32,
+      "max_rel_residual": 6.661338147750939e-16,
+      "mean_us": 26.53,
+      "n_forms": 10,
+      "used_linv": true
+    },
+    {
+      "fallback_count": 0,
+      "k_aug": 4,
+      "k_core": 64,
+      "max_rel_residual": 9.992007221626409e-16,
+      "mean_us": 102.25,
+      "n_forms": 10,
+      "used_linv": true
+    },
+    {
+      "fallback_count": 0,
+      "k_aug": 8,
+      "k_core": 128,
+      "max_rel_residual": 1.3322676295501878e-15,
+      "mean_us": 800.0,
+      "n_forms": 10,
+      "used_linv": true
+    }
+  ],
+  "soft_revision_v2": {
+    "mean_us": 3.697,
+    "steps": 25000,
+    "throughput_arrivals_per_sec": 270483.5
+  }
+}

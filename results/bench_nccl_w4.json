@@ -1,0 +1,163 @@
+{
+  "world_size": 4,
+  "device": "NVIDIA H200",
+  "seq_len": 16,
+  "calibrated_straggler_cycles": 990133,
+  "measured_straggler_us": 499.82081670314074,
+  "pipefuse_central_parity": {
+    "world_size": 4,
+    "n_total": 1024,
+    "max_abs_diff": 4.76837158203125e-07,
+    "passed_1e5": true
+  },
+  "stream_coordinator_payload_bytes": 384,
+  "benchmarks": [
+    {
+      "label": "weak_scaling_4096_per_gpu",
+      "world_size": 4,
+      "n_local": 4096,
+      "n_total": 16384,
+      "num_groups": 32,
+      "embed_dim": 256,
+      "fuse_dim": 128,
+      "seq_len": 16,
+      "straggler_injected": false,
+      "async_fuse": {
+        "p50_ms": 0.2946079969406128,
+        "p99_ms": 0.3466313660144804,
+        "mean_ms": 0.2965529590845108,
+        "throughput_series_per_s": 54376993.07670773,
+        "comm_bytes_per_step": 16640
+      },
+      "async_fuse_eager": {
+        "p50_ms": 0.7177119851112366,
+        "p99_ms": 0.7849814569950103,
+        "mean_ms": 0.7214719998836517,
+        "throughput_series_per_s": 21952670.1648261,
+        "comm_bytes_per_step": 16640
+      },
+      "pipe_fuse": {
+        "p50_ms": 1.2595199942588806,
+        "p99_ms": 2.0699282944202406,
+        "mean_ms": 1.3362419271469117,
+        "throughput_series_per_s": 12133808.95293337,
+        "comm_bytes_per_step": 16640
+      },
+      "allgather_variate": {
+        "p50_ms": 0.9639039933681488,
+        "p99_ms": 0.9770137631893158,
+        "mean_ms": 0.9631980776786804,
+        "throughput_series_per_s": 16920900.82820018,
+        "comm_bytes_per_step": 268435456
+      },
+      "allgather_variate_eager": {
+        "p50_ms": 0.9673600196838379,
+        "p99_ms": 0.9907337278127669,
+        "mean_ms": 0.9678828811645508,
+        "throughput_series_per_s": 16848395.673852395,
+        "comm_bytes_per_step": 268435456
+      },
+      "speedup_async_vs_allgather": 3.247979992012796,
+      "speedup_async_eager_vs_allgather_eager": 1.3415390774979992,
+      "comm_reduction_ratio": 16131.938461538462
+    },
+    {
+      "label": "strong_scaling_16384_total",
+      "world_size": 4,
+      "n_local": 4096,
+      "n_total": 16384,
+      "num_groups": 32,
+      "embed_dim": 256,
+      "fuse_dim": 128,
+      "seq_len": 16,
+      "straggler_injected": false,
+      "async_fuse": {
+        "p50_ms": 0.29603199660778046,
+        "p99_ms": 0.3482867270708082,
+        "mean_ms": 0.2980511999130249,
+        "throughput_series_per_s": 54126287.08670733,
+        "comm_bytes_per_step": 16640
+      },
+      "async_fuse_eager": {
+        "p50_ms": 0.8028960227966309,
+        "p99_ms": 1.016012749671936,
+        "mean_ms": 0.8101023995876312,
+        "throughput_series_per_s": 19274292.27235159,
+        "comm_bytes_per_step": 16640
+      },
+      "pipe_fuse": {
+        "p50_ms": 1.3795199990272522,
+        "p99_ms": 2.7332556569576214,
+        "mean_ms": 1.423022723197937,
+        "throughput_series_per_s": 11391468.413252817,
+        "comm_bytes_per_step": 16640
+      },
+      "allgather_variate": {
+        "p50_ms": 0.9639520049095154,
+        "p99_ms": 0.9727699208259583,
+        "mean_ms": 0.9637107253074646,
+        "throughput_series_per_s": 16915077.643037606,
+        "comm_bytes_per_step": 268435456
+      },
+      "allgather_variate_eager": {
+        "p50_ms": 0.9685280025005341,
+        "p99_ms": 0.9944265633821486,
+        "mean_ms": 0.9688908791542054,
+        "throughput_series_per_s": 16825835.368895795,
+        "comm_bytes_per_step": 268435456
+      },
+      "speedup_async_vs_allgather": 3.2333730768025344,
+      "speedup_async_eager_vs_allgather_eager": 1.1960103804746198,
+      "comm_reduction_ratio": 16131.938461538462
+    },
+    {
+      "label": "rotating_straggler_500us",
+      "world_size": 4,
+      "n_local": 4096,
+      "n_total": 16384,
+      "num_groups": 32,
+      "embed_dim": 256,
+      "fuse_dim": 128,
+      "seq_len": 16,
+      "straggler_injected": true,
+      "async_fuse": {
+        "p50_ms": 0.302607998251915,
+        "p99_ms": 0.8078025382757187,
+        "mean_ms": 0.43227583706378936,
+        "throughput_series_per_s": 37503350.114439756,
+        "comm_bytes_per_step": 16640
+      },
+      "async_fuse_eager": {
+        "p50_ms": 0.8001759946346283,
+        "p99_ms": 1.0698473143577576,
+        "mean_ms": 0.7866764843463898,
+        "throughput_series_per_s": 20097386.463652004,
+        "comm_bytes_per_step": 16640
+      },
+      "pipe_fuse": {
+        "p50_ms": 1.353264033794403,
+        "p99_ms": 2.2551967608928667,
+        "mean_ms": 1.5133081603050231,
+        "throughput_series_per_s": 10725996.369738586,
+        "comm_bytes_per_step": 16640
+      },
+      "allgather_variate": {
+        "p50_ms": 1.4540320038795471,
+        "p99_ms": 1.4782889401912689,
+        "mean_ms": 1.4528985595703126,
+        "throughput_series_per_s": 11237718.192494938,
+        "comm_bytes_per_step": 268435456
+      },
+      "allgather_variate_eager": {
+        "p50_ms": 1.457584023475647,
+        "p99_ms": 1.4727487933635712,
+        "mean_ms": 1.453888635635376,
+        "throughput_series_per_s": 11230551.793231858,
+        "comm_bytes_per_step": 268435456
+      },
+      "speedup_async_vs_allgather": 3.3610450434589376,
+      "speedup_async_eager_vs_allgather_eager": 1.8481404548953047,
+      "comm_reduction_ratio": 16131.938461538462
+    }
+  ]
+}

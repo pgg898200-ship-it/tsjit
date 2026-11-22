@@ -1,0 +1,488 @@
+{
+  "device": "NVIDIA H200",
+  "c11_arrival_engine": "SoftRevisionEngine",
+  "batched_c11_1024": {
+    "n_streams": 1024,
+    "n_ticks": 64,
+    "python_ctypes_pwl_us_per_decision": 0.6094382314358882,
+    "native_c11": {
+      "status": "ok",
+      "pwl_us_per_decision": 0.121225,
+      "soft_v2_us_per_decision": 0.402149,
+      "pwl_decisions_per_s": 8249133.5,
+      "soft_v2_decisions_per_s": 2486638.2
+    }
+  },
+  "models": {
+    "autogluon/chronos-bolt-small": {
+      "status": "ok",
+      "datasets": {
+        "electricity": {
+          "source": "local_arrow:electricity/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 31.061103980408774,
+            "mae": 38.67485864957174,
+            "coverage_80": 0.8411458333333334,
+            "coverage_90": 0.8932291666666667,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 6.004863505950198
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 31.64434621995875,
+            "mae": 37.05368733591185,
+            "coverage_80": 0.7968750000000001,
+            "coverage_90": 0.8958333333333334,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 33.53025,
+            "c11_arrival_only_p99_us": 61.81342499999995,
+            "full_tick_e2e_p50_us": 1061.4161250000002,
+            "full_tick_e2e_p99_us": 1301.1144374999978,
+            "arrival_p50_us": 33.53025,
+            "arrival_p99_us": 61.81342499999995,
+            "backbone_refresh_p50_ms": 1.47649749123957,
+            "e_ville_final_mean": 3.1609230262334838e-12,
+            "e_ville_final_max": 1.2615427899041792e-11
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 31.125339774149317,
+            "mae": 35.94721950197529,
+            "coverage_80": 0.7942708333333334,
+            "coverage_90": 0.9010416666666666,
+            "gpu_elision_ratio": 0.7447916666666665,
+            "c11_arrival_only_p50_us": 33.352875000000004,
+            "c11_arrival_only_p99_us": 63.66236249999995,
+            "full_tick_e2e_p50_us": 1047.72,
+            "full_tick_e2e_p99_us": 1266.9778125,
+            "arrival_p50_us": 33.352875000000004,
+            "arrival_p99_us": 63.66236249999995,
+            "backbone_refresh_p50_ms": 1.480383609305136,
+            "e_ville_final_mean": 1.4544984025333528e-13,
+            "e_ville_final_max": 5.642166709304695e-13
+          }
+        },
+        "ett1": {
+          "source": "local_arrow:ett1/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 1.7772102163772583,
+            "mae": 2.254312259280899,
+            "coverage_80": 0.78125,
+            "coverage_90": 0.875,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 6.164643651572987
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 1.6084153791045916,
+            "mae": 1.9483335702686226,
+            "coverage_80": 0.7994791666666666,
+            "coverage_90": 0.890625,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 33.937375,
+            "c11_arrival_only_p99_us": 61.58112499999993,
+            "full_tick_e2e_p50_us": 1054.7665,
+            "full_tick_e2e_p99_us": 1233.2306374999998,
+            "arrival_p50_us": 33.937375,
+            "arrival_p99_us": 61.58112499999993,
+            "backbone_refresh_p50_ms": 1.4756437740288675,
+            "e_ville_final_mean": 1.607618927690086e-13,
+            "e_ville_final_max": 3.2924410422610307e-13
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 1.6341162979116255,
+            "mae": 1.9608612198829432,
+            "coverage_80": 0.8072916666666667,
+            "coverage_90": 0.8906249999999999,
+            "gpu_elision_ratio": 0.7447916666666666,
+            "c11_arrival_only_p50_us": 33.10075,
+            "c11_arrival_only_p99_us": 51.718399999999974,
+            "full_tick_e2e_p50_us": 1017.2388750000001,
+            "full_tick_e2e_p99_us": 1187.05245,
+            "arrival_p50_us": 33.10075,
+            "arrival_p99_us": 51.718399999999974,
+            "backbone_refresh_p50_ms": 1.4720792387379333,
+            "e_ville_final_mean": 3.8547008295977984e-15,
+            "e_ville_final_max": 6.563629351133637e-15
+          }
+        },
+        "ett2": {
+          "source": "local_arrow:ett2/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 3.4537682619359757,
+            "mae": 4.419669131437938,
+            "coverage_80": 0.8046875,
+            "coverage_90": 0.9244791666666667,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 6.029590396792628
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 3.7289326030735777,
+            "mae": 4.748907752742655,
+            "coverage_80": 0.8046875,
+            "coverage_90": 0.8958333333333334,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 34.78675,
+            "c11_arrival_only_p99_us": 61.36792499999997,
+            "full_tick_e2e_p50_us": 1094.949625,
+            "full_tick_e2e_p99_us": 1390.0922999999966,
+            "arrival_p50_us": 34.78675,
+            "arrival_p99_us": 61.36792499999997,
+            "backbone_refresh_p50_ms": 1.481059123761952,
+            "e_ville_final_mean": 8.198942571535435e-13,
+            "e_ville_final_max": 1.7814636424920122e-12
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 3.7053273823214363,
+            "mae": 4.648100603765513,
+            "coverage_80": 0.8020833333333334,
+            "coverage_90": 0.90625,
+            "gpu_elision_ratio": 0.75,
+            "c11_arrival_only_p50_us": 33.86087500000001,
+            "c11_arrival_only_p99_us": 58.79806249999999,
+            "full_tick_e2e_p50_us": 1048.778875,
+            "full_tick_e2e_p99_us": 1169.5662375000002,
+            "arrival_p50_us": 33.86087500000001,
+            "arrival_p99_us": 58.79806249999999,
+            "backbone_refresh_p50_ms": 1.48217540117912,
+            "e_ville_final_mean": 1.411512343255591e-14,
+            "e_ville_final_max": 2.1140370367961315e-14
+          }
+        },
+        "LOOP_SEATTLE": {
+          "source": "local_arrow:LOOP_SEATTLE/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 2.0489020248806034,
+            "mae": 2.4563418303926783,
+            "coverage_80": 0.828125,
+            "coverage_90": 0.8958333333333334,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 6.2175105849746615
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 2.2094842805333172,
+            "mae": 2.5825674047744327,
+            "coverage_80": 0.8020833333333334,
+            "coverage_90": 0.8958333333333334,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 35.785875000000004,
+            "c11_arrival_only_p99_us": 70.81643749999999,
+            "full_tick_e2e_p50_us": 1130.693125,
+            "full_tick_e2e_p99_us": 1820.1512124999997,
+            "arrival_p50_us": 35.785875000000004,
+            "arrival_p99_us": 70.81643749999999,
+            "backbone_refresh_p50_ms": 1.492016002885066,
+            "e_ville_final_mean": 2.561475711438918e-12,
+            "e_ville_final_max": 9.288685322215144e-12
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 2.266022290522672,
+            "mae": 2.6208836578728296,
+            "coverage_80": 0.8098958333333334,
+            "coverage_90": 0.8958333333333334,
+            "gpu_elision_ratio": 0.7369791666666667,
+            "c11_arrival_only_p50_us": 33.840375,
+            "c11_arrival_only_p99_us": 63.30599999999999,
+            "full_tick_e2e_p50_us": 1068.7782499999998,
+            "full_tick_e2e_p99_us": 1392.3025624999996,
+            "arrival_p50_us": 33.840375,
+            "arrival_p99_us": 63.30599999999999,
+            "backbone_refresh_p50_ms": 1.4828937564743683,
+            "e_ville_final_mean": 6.035254779450942e-13,
+            "e_ville_final_max": 1.875269674682825e-12
+          }
+        },
+        "bitbrains_fast_storage": {
+          "source": "local_arrow:bitbrains_fast_storage/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 16.703518957479133,
+            "mae": 19.89575557410717,
+            "coverage_80": 0.8489583333333334,
+            "coverage_90": 0.90625,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 6.246165226912126
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 17.578511406544273,
+            "mae": 20.398820930843467,
+            "coverage_80": 0.8020833333333334,
+            "coverage_90": 0.8854166666666666,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 33.114875,
+            "c11_arrival_only_p99_us": 52.696099999999944,
+            "full_tick_e2e_p50_us": 1011.2070000000001,
+            "full_tick_e2e_p99_us": 1196.3993625,
+            "arrival_p50_us": 33.114875,
+            "arrival_p99_us": 52.696099999999944,
+            "backbone_refresh_p50_ms": 1.4680362364742905,
+            "e_ville_final_mean": 4.92494041420319e-10,
+            "e_ville_final_max": 9.849244640467216e-10
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 20.124160435338833,
+            "mae": 22.45766142393404,
+            "coverage_80": 0.796875,
+            "coverage_90": 0.890625,
+            "gpu_elision_ratio": 0.734375,
+            "c11_arrival_only_p50_us": 35.16625,
+            "c11_arrival_only_p99_us": 62.62008749999997,
+            "full_tick_e2e_p50_us": 1058.8685,
+            "full_tick_e2e_p99_us": 1362.9865375,
+            "arrival_p50_us": 35.16625,
+            "arrival_p99_us": 62.62008749999997,
+            "backbone_refresh_p50_ms": 1.4754974545212463,
+            "e_ville_final_mean": 7.267389692224654e-10,
+            "e_ville_final_max": 1.4507568429119262e-09
+          }
+        }
+      }
+    },
+    "Datadog/Toto-2.0-4m": {
+      "status": "ok",
+      "datasets": {
+        "electricity": {
+          "source": "local_arrow:electricity/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 28.420427422059905,
+            "mae": 36.114320834477745,
+            "coverage_80": 0.7760416666666667,
+            "coverage_90": 0.8489583333333334,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 10.626838993630372
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 32.26726430666503,
+            "mae": 40.40643180943141,
+            "coverage_80": 0.828125,
+            "coverage_90": 0.90625,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 32.74125,
+            "c11_arrival_only_p99_us": 58.23349999999996,
+            "full_tick_e2e_p50_us": 1008.543375,
+            "full_tick_e2e_p99_us": 1238.0639374999996,
+            "arrival_p50_us": 32.74125,
+            "arrival_p99_us": 58.23349999999996,
+            "backbone_refresh_p50_ms": 1.0673218785086647,
+            "e_ville_final_mean": 1.517612078674907e-08,
+            "e_ville_final_max": 6.065394350466726e-08
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 34.336804107008945,
+            "mae": 40.483000085252044,
+            "coverage_80": 0.8229166666666666,
+            "coverage_90": 0.90625,
+            "gpu_elision_ratio": 0.734375,
+            "c11_arrival_only_p50_us": 32.927875,
+            "c11_arrival_only_p99_us": 50.71371249999991,
+            "full_tick_e2e_p50_us": 996.1040000000002,
+            "full_tick_e2e_p99_us": 1073.9377250000002,
+            "arrival_p50_us": 32.927875,
+            "arrival_p99_us": 50.71371249999991,
+            "backbone_refresh_p50_ms": 1.0684797307476401,
+            "e_ville_final_mean": 4.7370234220596425e-07,
+            "e_ville_final_max": 1.8948075803322646e-06
+          }
+        },
+        "ett1": {
+          "source": "local_arrow:ett1/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 1.6666901760161164,
+            "mae": 2.0418799578328617,
+            "coverage_80": 0.8020833333333333,
+            "coverage_90": 0.8802083333333334,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 10.728893990744837
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 1.6377497763624518,
+            "mae": 1.974392504602894,
+            "coverage_80": 0.7942708333333334,
+            "coverage_90": 0.8880208333333333,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 32.752125,
+            "c11_arrival_only_p99_us": 51.738149999999976,
+            "full_tick_e2e_p50_us": 1011.33575,
+            "full_tick_e2e_p99_us": 1242.9379249999986,
+            "arrival_p50_us": 32.752125,
+            "arrival_p99_us": 51.738149999999976,
+            "backbone_refresh_p50_ms": 0.9637092589400709,
+            "e_ville_final_mean": 1.4087954978013103e-13,
+            "e_ville_final_max": 2.8075401387924247e-13
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 1.6732734897763901,
+            "mae": 1.980628574694487,
+            "coverage_80": 0.8020833333333334,
+            "coverage_90": 0.890625,
+            "gpu_elision_ratio": 0.7447916666666666,
+            "c11_arrival_only_p50_us": 34.085625,
+            "c11_arrival_only_p99_us": 58.552912499999984,
+            "full_tick_e2e_p50_us": 1056.1460000000002,
+            "full_tick_e2e_p99_us": 1247.9759874999997,
+            "arrival_p50_us": 34.085625,
+            "arrival_p99_us": 58.552912499999984,
+            "backbone_refresh_p50_ms": 0.9717962384456769,
+            "e_ville_final_mean": 2.4165210965283418e-15,
+            "e_ville_final_max": 6.083154716455612e-15
+          }
+        },
+        "ett2": {
+          "source": "local_arrow:ett2/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 3.641180216824567,
+            "mae": 4.588298579057057,
+            "coverage_80": 0.78125,
+            "coverage_90": 0.8619791666666666,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 10.77547723252792
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 3.872590191006378,
+            "mae": 4.918067951367681,
+            "coverage_80": 0.8098958333333334,
+            "coverage_90": 0.8984375000000001,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 32.77825,
+            "c11_arrival_only_p99_us": 47.6342375,
+            "full_tick_e2e_p50_us": 1006.801125,
+            "full_tick_e2e_p99_us": 1168.3326625,
+            "arrival_p50_us": 32.77825,
+            "arrival_p99_us": 47.6342375,
+            "backbone_refresh_p50_ms": 0.9628856350900605,
+            "e_ville_final_mean": 1.3269630094185573e-11,
+            "e_ville_final_max": 3.589447468044804e-11
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 3.846424098482711,
+            "mae": 4.785213931595693,
+            "coverage_80": 0.8046875,
+            "coverage_90": 0.90625,
+            "gpu_elision_ratio": 0.75,
+            "c11_arrival_only_p50_us": 32.7525,
+            "c11_arrival_only_p99_us": 52.00567499999997,
+            "full_tick_e2e_p50_us": 987.962875,
+            "full_tick_e2e_p99_us": 1157.5786,
+            "arrival_p50_us": 32.7525,
+            "arrival_p99_us": 52.00567499999997,
+            "backbone_refresh_p50_ms": 0.9667302365414798,
+            "e_ville_final_mean": 1.0570714986151561e-13,
+            "e_ville_final_max": 2.40481349695028e-13
+          }
+        },
+        "LOOP_SEATTLE": {
+          "source": "local_arrow:LOOP_SEATTLE/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 1.7951080704728761,
+            "mae": 2.259649880230427,
+            "coverage_80": 0.7526041666666666,
+            "coverage_90": 0.8619791666666666,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 10.745440260507166
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 2.166625684746578,
+            "mae": 2.6381364340820705,
+            "coverage_80": 0.8125,
+            "coverage_90": 0.9010416666666667,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 33.621625,
+            "c11_arrival_only_p99_us": 53.14936249999999,
+            "full_tick_e2e_p50_us": 1005.7738750000001,
+            "full_tick_e2e_p99_us": 1169.5331625,
+            "arrival_p50_us": 33.621625,
+            "arrival_p99_us": 53.14936249999999,
+            "backbone_refresh_p50_ms": 0.9662711236160249,
+            "e_ville_final_mean": 1.7116575276548515e-07,
+            "e_ville_final_max": 5.385641497252429e-07
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 2.2023391649992634,
+            "mae": 2.6423395618918004,
+            "coverage_80": 0.8020833333333334,
+            "coverage_90": 0.9036458333333334,
+            "gpu_elision_ratio": 0.7421875,
+            "c11_arrival_only_p50_us": 33.455124999999995,
+            "c11_arrival_only_p99_us": 51.6147875,
+            "full_tick_e2e_p50_us": 991.82425,
+            "full_tick_e2e_p99_us": 1171.3339875,
+            "arrival_p50_us": 33.455124999999995,
+            "arrival_p99_us": 51.6147875,
+            "backbone_refresh_p50_ms": 0.9656363545218483,
+            "e_ville_final_mean": 5.840486249359113e-09,
+            "e_ville_final_max": 2.0465998155335786e-08
+          }
+        },
+        "bitbrains_fast_storage": {
+          "source": "local_arrow:bitbrains_fast_storage/H",
+          "assert_causal_bit_exact": true,
+          "assert_causal_gap_async": true,
+          "assert_causal_event_gated": true,
+          "standalone_eager": {
+            "pinball_crps": 15.205243642793759,
+            "mae": 18.624032465120155,
+            "coverage_80": 0.7864583333333333,
+            "coverage_90": 0.8854166666666666,
+            "gpu_elision_ratio": 0.0,
+            "p50_ms": 10.766639781650156
+          },
+          "tsjit_gap_async": {
+            "pinball_crps": 18.0650425720105,
+            "mae": 20.74651986128781,
+            "coverage_80": 0.7864583333333334,
+            "coverage_90": 0.875,
+            "gpu_elision_ratio": 0.0,
+            "c11_arrival_only_p50_us": 33.672375,
+            "c11_arrival_only_p99_us": 52.88807499999999,
+            "full_tick_e2e_p50_us": 1011.756375,
+            "full_tick_e2e_p99_us": 1237.2122749999999,
+            "arrival_p50_us": 33.672375,
+            "arrival_p99_us": 52.88807499999999,
+            "backbone_refresh_p50_ms": 0.965539860771969,
+            "e_ville_final_mean": 0.0026449243239936673,
+            "e_ville_final_max": 0.005289960258513585
+          },
+          "tsjit_event_gated": {
+            "pinball_crps": 20.66253794374298,
+            "mae": 22.335165840558833,
+            "coverage_80": 0.796875,
+            "coverage_90": 0.8854166666666667,
+            "gpu_elision_ratio": 0.71875,
+            "c11_arrival_only_p50_us": 33.527625,
+            "c11_arrival_only_p99_us": 45.51797499999997,
+            "full_tick_e2e_p50_us": 998.469875,
+            "full_tick_e2e_p99_us": 1112.1038374999998,
+            "arrival_p50_us": 33.527625,
+            "arrival_p99_us": 45.51797499999997,
+            "backbone_refresh_p50_ms": 0.9676469780970365,
+            "e_ville_final_mean": 2.1495872576746776e-05,
+            "e_ville_final_max": 4.299302270671772e-05
+          }
+        }
+      }
+    }
+  }
+}

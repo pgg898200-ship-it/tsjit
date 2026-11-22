@@ -1,0 +1,25 @@
+# Byte-compiled / caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Build / packaging artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Compiled native artifacts
+*.so
+*.dylib
+*.dll
+*.o
+*.a
+
+# Virtual environments & OS metadata
+.venv/
+venv/
+.DS_Store
