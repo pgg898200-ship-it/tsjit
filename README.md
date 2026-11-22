@@ -1,6 +1,8 @@
 # tsjit
 
-**Update a time-series forecast as each observation arrives.** Feed the Python runtime an ordered series of measurements. Each step returns nine quantiles, a calibrated interval and rolling statistics for your downstream alert or scheduler. The native CPU path runs locally. A separate compiler wraps supported PyTorch forecasting models for batched GPU inference.
+**Get a new forecast with every meter reading.** Call `stream.step(tick, value)` in your Python ingestion loop. It returns nine forecast quantiles, a calibrated prediction interval and rolling statistics. Your alerting or scheduling code can use the result immediately. The stream can run on a CPU without model weights. For batch inference, wrap a supported PyTorch forecaster with `tsjit.compile`, then call `predict_quantiles` on a batch of series.
+
+![Readings rise from 10 to 14 at ticks 0 through 4. For tick 5, tsjit predicts a median of 14.00 and a calibrated interval of 12.34 to 15.66.](docs/five-readings.svg)
 
 ## Try five readings on your CPU
 
@@ -18,51 +20,23 @@ with tsjit.stream(spec=spec) as stream:
     for tick, value in enumerate([10.0, 11.0, 12.0, 13.0, 14.0]):
         result = stream.step(tick, value)
 
-print(result.step, result.rolling_mean, len(result.q9))
-# 4 12.0 9
+print(f"Tick {result.step + spec.horizon}: median {result.q9[4]:.2f}, "
+      f"interval [{result.cal_lo:.2f}, {result.cal_hi:.2f}]")
+# Tick 5: median 14.00, interval [12.34, 15.66]
 ```
 
-Run `tsjit verify` to check the native build, causal outputs and isolation between channels on your machine. For a GPU-backed forecast, start with the [compiler example](#1-plan-aware-tsfm-compilation-tsjitcompile). For agent clients, use the [MCP server](#4-built-in-mcp-server-tsjit-mcp).
+`result.rolling_mean` is 12.0 across the five observed values. `result.q9[4]` is the median forecast for the next tick. Run `tsjit verify` to check the native build, causality and channel isolation on your machine.
 
----
+## Choose an entry point
 
-## Why `tsjit` Exists
+| What your application needs | Where tsjit fits |
+|---|---|
+| A forecast on each observation | Call `tsjit.stream` from your ingestion loop. Pass a model to refresh its forecast when the event gate fires. |
+| Batch forecasts from a time-series foundation model | Wrap Chronos-Bolt, Chronos-2 or Toto-2.0 with `tsjit.compile`. Pass batches to `predict_quantiles` before scoring or scheduling. |
+| Multiple agents reading some of the same channels | Subscribe each agent to its channels in `MultiAgentStreamHub`, then ingest each set of readings once. |
+| Forecasting tools for an MCP client | Launch `tsjit mcp` over standard input and output. The server exposes validation, verification, simulation, benchmarks, runtime information and a hub demo. |
 
-Production streaming and multi-agent time-series stacks stall at five coupled bottlenecks that generic LLM compilers (`torch.compile`, vLLM, TensorRT-LLM) were never designed to solve:
-
-1. **TSFM Structural Waste & Precision Cliffs:** Public TSFMs run per-series Python wrappers, quadratic `O(B^2)` group self-attention even on independent streams (`Chronos-2`), or launch-grid-overflowing variate kernels at `B >= 4096` (`Toto-2.0`). Naive `BF16`/`FP8` or even `TF32` silently corrupts quantile tails under 25% missingness or large DC offsets (`10^10`).
-2. **Synchronous GPU Blocking on Tick Arrival:** Calling a `5–15 ms` TSFM on every tick caps real-time throughput at ~`100 Hz` and violates sub-millisecond agent SLAs.
-3. **Batch `O(K^3)` Online Linear Algebra:** Updating online Ridge regressions across tens of thousands of streams with batched `torch.linalg.cholesky` saturates HBM bandwidth at `K = 64–136`.
-4. **Multi-Agent Memory Contention & NaN Contagion:** N agents polling overlapping raw channels duplicate ring buffers, stall behind global locks, or propagate a single corrupted sensor channel (`NaN`) across unrelated agents.
-5. **Distributed Cross-Series Bandwidth Collapse:** Multi-GPU `AllGather` across `N = 16,384` streams ships `268 MB/step` and stalls every rank behind the slowest straggler.
-
-`tsjit` addresses all five layers as composable, drop-in primitives:
-
-```text
-+------------------------------------------------------------------------------+
-|                        tsjit.compile(model, ...)                             |
-|  Plan-aware passes (Toto-2.0, Chronos-2, Chronos-Bolt, Generic) + Causal     |
-|  Float64 DC-Strip + Bucketed CUDA Graphs (torch.compile mode="default")      |
-+------------------------------------------------------------------------------+
-|                   Crest-Guarded Scaled-FP16 & FP16x3                         |
-|  Hopper cuBLAS WGMMA (CUBLAS_COMPUTE_32F) + per-row/col power-of-2 ldexp     |
-|  exponent scaling + 3-term Ozaki exact split (FP32 FroRelErr ~ 1e-6)         |
-+------------------------------------------------------------------------------+
-|            Hopper SM90 Persistent SMEM Online Ridge (IPCG)                   |
-|  Rank-m preconditioned CG in shared memory + int64 bit-exact Gram monoid     |
-|  + automatic GPU Cholesky fallback on regime shocks / ill-conditioning       |
-+------------------------------------------------------------------------------+
-|          Zero-Dep Native C11 Runtime (AVX2+FMA / Apple NEON)                 |
-|  Lock-free seqlock PWL-ARRIVE & SoftRevisionV2 | Shared-core Schur solve     |
-|  Domain-partitioned EBR MultiAgentStreamHub | OnlineACI + E-Value EventGate  |
-+------------------------------------------------------------------------------+
-|             Distributed Associative Fusion (AsyncFuse / PipeFuse)            |
-|  3-graph ping-pong overlapped NCCL FP32 monoid AllReduce (16.6 KB/step,      |
-|  16,132x less traffic than AllGather, 99.1% weak scaling across 4x H200)     |
-+------------------------------------------------------------------------------+
-```
-
----
+The [benchmark scripts](benchmarks/) and [recorded results](results/) cover model compilation, GPU matrix precision, online ridge regression, the native C11 arrival path and cross-GPU fusion. The tables below give the workload and hardware for each result.
 
 ## GPU and model integrations
 
@@ -78,21 +52,24 @@ python -m pip install -e '.[cuda,tsfm]'  # GPU compiler plus model integrations
 ```python
 import torch
 import tsjit
+from chronos import ChronosBoltPipeline
 
-# Works on Datadog/Toto-2.0-4m, Datadog/Toto-2.0-22m,
-# autogluon/chronos-bolt-small, amazon/chronos-2, or generic nn.Module forecasters.
+pipeline = ChronosBoltPipeline.from_pretrained(
+    "autogluon/chronos-bolt-small", device_map="cuda", torch_dtype=torch.float32,
+)
+pipeline.model.eval()
 compiled = tsjit.compile(
     pipeline,
     horizon=16,
     context_length=512,
-    precision="a10-auto",  # strict zero-fail FP32 parity; use "fast-tf32" for peak speed
+    precision="a10-auto",
     mode="exact",
     verify=True,           # audits compiled output against unmodified strict-FP32 eager
 )
 
 x = torch.randn(1024, 512, device="cuda")
 quantiles = compiled.predict_quantiles(x)
-print(compiled.summary())
+print(compiled.report()["family"])  # chronos-bolt
 ```
 
 ### 2. Causal Streaming, Conformal Calibration & Bit-Exact Audit (`tsjit.stream`)

@@ -44,7 +44,7 @@ tsjit.compile(
   - `precision="fast-tf32"` (alias `"tf32"`): maximum-throughput TF32 execution (explicitly opt-in; see Section 5 for Toto-2.0 `nan_25pct` caveat).
   - `precision="fp32"` (or `mode="fp32"`): strict IEEE-754 FP32.
 - **Verification contract (`verify=True`):** Audits compiled `predict_quantiles` directly against the unmodified strict-FP32 eager reference on `verify_samples` (default 8 sinusoidal+noise series). Under `mode="exact"` with `auto`/`scaled-fp16`, any parity breach automatically escalates to `fp16x3` and re-verifies.
-- **Returned `CompiledTSFM` methods:** `.predict_quantiles(x, ...)`, `.__call__(x, ...)`, `.summary()`, `.family`, `.precision_resolved`, `.parity_report`.
+- **Compiled forecast API:** `.predict(x)` returns point forecasts. `.predict_quantiles(x)` and calling the object directly return quantiles. `.report()` returns compilation, precision and parity details. `.family`, `.precision_resolved` and `.parity_report` are attributes.
 
 ### 1.2 Causal Streaming Runtime (`tsjit.runtime.arrival`, `tsjit.runtime.spec`, `tsjit.runtime.calibration`)
 
