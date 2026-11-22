@@ -28,9 +28,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/tsjit/tsjit"
-Repository = "https://github.com/tsjit/tsjit"
-Issues = "https://github.com/tsjit/tsjit/issues"
+Homepage = "https://github.com/pgg898200-ship-it/tsjit"
+Repository = "https://github.com/pgg898200-ship-it/tsjit"
+Issues = "https://github.com/pgg898200-ship-it/tsjit/issues"
 
 [project.optional-dependencies]
 numpy = ["numpy>=1.26"]
